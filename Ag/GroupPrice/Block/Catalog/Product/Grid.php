@@ -121,11 +121,6 @@ class Ag_GroupPrice_Block_Catalog_Product_Grid extends Mage_Adminhtml_Block_Widg
         }
 
 
-        $sets = Mage::getResourceModel('eav/entity_attribute_set_collection')
-            ->setEntityTypeFilter(Mage::getModel('catalog/product')->getResource()->getTypeId())
-            ->load()
-            ->toOptionHash();
-
         $this->addColumn('sku',
             array(
                 'header'=> Mage::helper('catalog')->__('SKU'),
@@ -174,21 +169,6 @@ class Ag_GroupPrice_Block_Catalog_Product_Grid extends Mage_Adminhtml_Block_Widg
         return parent::_addColumnFilterToCollection($column);
     }
 
-    public function getMainButtonsHtml()
-    {
-
-//        $html = parent::getMainButtonsHtml();
-//        $html = '';
-//        $add_artwork_button = $this->getLayout()->createBlock('adminhtml/widget_button')
-//            ->setData(array(
-//                'label'     => Mage::helper('adminhtml')->__('Add Loyalty Group Price'),
-//                'onclick'   => 'javascript:openArtworks();',
-//                'class'   => 'save'
-//            ));
-//        $html .= $add_artwork_button->toHtml();
-//        return $html;
-    }
-
     protected function _prepareMassaction()
     {
         $this->setMassactionIdField('entity_id');
@@ -224,7 +204,6 @@ class Ag_GroupPrice_Block_Catalog_Product_Grid extends Mage_Adminhtml_Block_Widg
 
     public function getRowUrl($row)
     {
-        //@nelkaake -m 16/11/10: Changed to use _getStore function
         return $this->getUrl('adminhtml/catalog_product/edit',
             array(
                 'store' => $this->_getStore(),

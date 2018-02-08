@@ -3,7 +3,7 @@
 class Ag_GroupPrice_Block_Adminhtml_System_Config_Form_Fieldset_Customer_Groups extends Mage_Adminhtml_Block_System_Config_Form_Fieldset
 {
 
-    protected $_dummyElement;
+    protected $_varienElement;
     protected $_fieldRenderer;
     protected $_values;
 
@@ -24,12 +24,12 @@ class Ag_GroupPrice_Block_Adminhtml_System_Config_Form_Fieldset_Customer_Groups 
         return $html;
     }
 
-    protected function _getDummyElement()
+    protected function _getVarienElement()
     {
-        if (empty($this->_dummyElement)) {
-            $this->_dummyElement = new Varien_Object(array('show_in_default'=>1, 'show_in_website'=>1));
+        if (empty($this->_varienElement)) {
+            $this->_varienElement = new Varien_Object(array('show_in_default'=>1, 'show_in_website'=>1));
         }
-        return $this->_dummyElement;
+        return $this->_varienElement;
     }
 
     protected function _getFieldRenderer()
@@ -63,7 +63,7 @@ class Ag_GroupPrice_Block_Adminhtml_System_Config_Form_Fieldset_Customer_Groups 
             $inherit = true;
         }
 
-        $e = $this->_getDummyElement();
+        $e = $this->_getVarienElement();
 
         $field = $fieldset->addField($group->getId(), 'text',
             array(
@@ -91,7 +91,7 @@ class Ag_GroupPrice_Block_Adminhtml_System_Config_Form_Fieldset_Customer_Groups 
             $inherit = true;
         }
 
-        $e = $this->_getDummyElement();
+        $e = $this->_getVarienElement();
 
         $field = $fieldset->addField('skus_'.$group->getId(), 'textarea',
             array(
@@ -103,7 +103,7 @@ class Ag_GroupPrice_Block_Adminhtml_System_Config_Form_Fieldset_Customer_Groups 
                 'can_use_default_value' => $this->getForm()->canUseDefaultValue($e),
                 'can_use_website_value' => $this->getForm()->canUseWebsiteValue($e),
             ))->setRenderer($this->_getFieldRenderer());
-
-        return $field->toHtml();
+        //TODO: This functionality architecture is not ready yet.
+//        return $field->toHtml();
     }
 }

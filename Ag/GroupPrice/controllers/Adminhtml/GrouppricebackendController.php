@@ -1,11 +1,11 @@
 <?php
+
 class Ag_GroupPrice_Adminhtml_GrouppricebackendController extends Mage_Adminhtml_Controller_Action
 {
 
 	protected function _isAllowed()
 	{
-		//return Mage::getSingleton('admin/session')->isAllowed('groupprice/grouppricebackend');
-		return true;
+		return Mage::getSingleton('admin/session')->isAllowed('groupprice/grouppricebackend');
 	}
 
 	public function indexAction()
@@ -31,44 +31,23 @@ class Ag_GroupPrice_Adminhtml_GrouppricebackendController extends Mage_Adminhtml
     public function massAction()
     {
         $prod = Mage::app()->getRequest()->getParam('product');
-        $storeId= Mage::app()->getStore()->getStoreId();
-        $customer_gruop = Mage::app()->getRequest()->getParam('customer_group');
+        $storeId = Mage::app()->getStore()->getStoreId();
+        $customer_group = Mage::app()->getRequest()->getParam('customer_group');
         $prod_model = Mage::getModel('catalog/product');
-
+        $save = Mage::getModel('groupprice/aggroupprice');
         foreach ($prod as $item) {
             $product = $prod_model->load($item);
-            $discount = Mage::getStoreConfig('groupprice/customergroup/group_'.$customer_gruop);
+            $discount = Mage::getStoreConfig('groupprice/customergroup/group_'.$customer_group);
             $prices = $product->getData('group_price');
-            $prices = $this->_priceAlreadyExist($prices,$customer_gruop);
-            $final_group_price = $product->getPrice() *($discount/100);
+            $final_group_price = $product->getPrice() - ( number_format(($discount/100) * $product->getPrice(),2));
 
             $new_price = array (
-                "website_id" => $storeId, "cust_group" => $customer_gruop, "price" => $final_group_price
+                "website_id" => $storeId, "cust_group" => $customer_group, "price" => $final_group_price
             );
             array_push($prices,$new_price);
-
-            $product->setGroupPrice($prices)
-                ->getResource()
-                ->getAttribute('group_price')
-                ->getBackend()
-                ->afterSave($product);
+            $save->insertProductPrice($prices,$product);
         }
         return $this->_redirect('admin_groupprice/adminhtml_grouppricebackend');
-    }
-
-
-
-    protected function _priceAlreadyExist($param = array(), $customer_gruop)
-    {
-        foreach ($param as $item) {
-
-            $key = array_search($customer_gruop,$item);
-            if ($key == 'cust_group')
-            {
-                unset($param);
-            }
-        }
-        return $param;
     }
 
     public function gridAction()

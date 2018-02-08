@@ -1,21 +1,19 @@
 <?php
 
-class Ag_GroupPrice_Model_AgGroupprice extends Mage_Catalog_Model_Resource_Product_Attribute_Backend_Groupprice
+class Ag_GroupPrice_Model_AgGroupprice
 {
-    public function __construct()
-    {
-        parent::_construct();
-    }
 
     /**
-     * @param array $data
-     * @return Mage_Catalog_Model_Resource_Product_Attribute_Backend_Tierprice
+     * @param $prices = array()
+     * @param $product
      */
-    public function insertProductPrice($product, $data)
+    public function insertProductPrice($prices, $product)
     {
-        $priceObject = new Varien_Object($data);
-        $priceObject->setEntityId($product->getId());
-
-        return $this->savePriceData($priceObject);
+        $product->setGroupPrice($prices)
+            ->getResource()
+            ->getAttribute('group_price')
+            ->getBackend()
+            ->afterSave($product);
     }
+
 }
