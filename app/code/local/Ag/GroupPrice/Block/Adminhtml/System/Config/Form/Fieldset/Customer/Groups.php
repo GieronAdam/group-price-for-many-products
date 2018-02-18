@@ -15,10 +15,11 @@ class Ag_GroupPrice_Block_Adminhtml_System_Config_Form_Fieldset_Customer_Groups 
         foreach ($groups as $group) {
             $html.= $this->_getPercentageFieldHtml($element, $group);
         }
-
+//TODO: not finished yet 
         foreach ($groups as $group) {
             $html.= $this->_getSkuListsHtml($element, $group);
         }
+//TODO: ---------------->
         $html .= $this->_getFooterHtml($element);
 
         return $html;
